@@ -64,11 +64,11 @@ func loadEnv(filename string) (map[string]string, error) {
 func loadAccountConfig(env map[string]string) (*AccountConfig, error) {
 	config := &AccountConfig{}
 
-	personalAccount, personalAccountUsernameExists := env["PERSONAL_ACCOUNT_USERNAME"]
-	personalAccountToken, personalAccountTokenExists := env["PERSONAL_ACCOUNT_TOKEN"]
+	personalAccount, personalAccountUsernameExists := env["GITHUB_PERSONAL_USER"]
+	personalAccountToken, personalAccountTokenExists := env["GITHUB_PERSONAL_TOKEN"]
 
 	if !personalAccountUsernameExists || !personalAccountTokenExists {
-		return nil, fmt.Errorf("missing personal account configuration: PERSONAL_ACCOUNT_USERNAME and PERSONAL_ACCOUNT_TOKEN required")
+		return nil, fmt.Errorf("missing personal account configuration: GITHUB_PERSONAL_USER and GITHUB_PERSONAL_TOKEN required")
 	}
 
 	config.PersonalAccount = Account{
@@ -76,11 +76,11 @@ func loadAccountConfig(env map[string]string) (*AccountConfig, error) {
 		Token:    personalAccountToken,
 	}
 
-	workAccountUsername, workAccountUsernameExists := env["WORK_ACCOUNT_USERNAME"]
-	workAccountToken, workAccountTokenExists := env["WORK_ACCOUNT_TOKEN"]
+	workAccountUsername, workAccountUsernameExists := env["GITHUB_WORK_USER"]
+	workAccountToken, workAccountTokenExists := env["GITHUB_WORK_TOKEN"]
 
 	if !workAccountUsernameExists || !workAccountTokenExists {
-		return nil, fmt.Errorf("missing Work account configuration: WORK_ACCOUNT_USERNAME and WORK_ACCOUNT_TOKEN required")
+		return nil, fmt.Errorf("missing Work account configuration: GITHUB_WORK_USER and GITHUB_WORK_TOKEN required")
 	}
 
 	config.WorkAccount = Account{
@@ -153,10 +153,10 @@ func main() {
 	env, err := loadEnv(envFile)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error loading .secure-git.env file: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Make sure you have a .secure-git.env file with WORK_ACCOUNT_USERNAME, "+
-			"WORK_ACCOUNT_TOKEN, "+
-			"PERSONAL_ACCOUNT_USERNAME, "+
-			"and PERSONAL_ACCOUNT_TOKEN\n")
+		fmt.Fprintf(os.Stderr, "Make sure you have a .secure-git.env file with GITHUB_WORK_USER, "+
+			"GITHUB_WORK_TOKEN, "+
+			"GITHUB_PERSONAL_USER, "+
+			"and GITHUB_PERSONAL_TOKEN\n")
 		os.Exit(1)
 	}
 
